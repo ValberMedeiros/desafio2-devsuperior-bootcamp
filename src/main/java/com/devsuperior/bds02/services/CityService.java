@@ -5,6 +5,7 @@ import com.devsuperior.bds02.entities.City;
 import com.devsuperior.bds02.exceptions.DataBaseException;
 import com.devsuperior.bds02.exceptions.EntityNotFoundException;
 import com.devsuperior.bds02.repositories.CityRepository;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
@@ -34,7 +35,7 @@ public class CityService {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException(String.format("City with id %d not found!", id));
-        } catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException | ConstraintViolationException e) {
             throw new DataBaseException(String.format("the city with id %d cannot be deleted as it is in use", id));
         }
     }
